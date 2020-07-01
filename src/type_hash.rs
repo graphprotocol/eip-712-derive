@@ -22,16 +22,16 @@ pub fn encode_type<T: StructType>(value: &T) -> String {
 
     fn add_type(s: &mut String, t: &EncodedType) {
         s.push_str(t.name);
-        s.push_str("(");
+        s.push('(');
         let mut members = t.members.iter();
         if let Some(member) = members.next() {
             member.write(s);
         }
         for member in members {
-            s.push_str(",");
+            s.push(',');
             member.write(s);
         }
-        s.push_str(")");
+        s.push(')');
     }
 
     add_type(&mut buffer, &outer);
@@ -113,7 +113,7 @@ struct Member {
 impl Member {
     pub fn write(&self, buffer: &mut String) {
         buffer.push_str(self.r#type);
-        buffer.push_str(" ");
+        buffer.push(' ');
         buffer.push_str(self.name);
     }
 }
@@ -160,61 +160,5 @@ impl MemberVisitor for StructTypeBuilder<'_> {
             None => {}
         }
         value.add_members(self.parent);
-    }
-}
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[derive(Default)]
-    struct Transaction {
-        from: Person,
-        to: Person,
-        tx: Asset,
-    }
-
-    impl StructType for Transaction {
-        const TYPE_NAME: &'static str = "Transaction";
-        fn visit_members<T: MemberVisitor>(&self, visitor: &mut T) {
-            visitor.visit("from", &self.from);
-            visitor.visit("to", &self.to);
-            visitor.visit("tx", &self.tx);
-        }
-    }
-
-    #[derive(Default)]
-    struct Person {
-        wallet: Address,
-        name: String,
-    }
-    impl StructType for Person {
-        const TYPE_NAME: &'static str = "Person";
-        fn visit_members<T: MemberVisitor>(&self, visitor: &mut T) {
-            visitor.visit("wallet", &self.wallet);
-            visitor.visit("name", &self.name);
-        }
-    }
-
-    #[derive(Default)]
-    struct Asset {
-        token: Address,
-        amount: U256,
-    }
-
-    impl StructType for Asset {
-        const TYPE_NAME: &'static str = "Asset";
-        fn visit_members<T: MemberVisitor>(&self, visitor: &mut T) {
-            visitor.visit("token", &self.token);
-            visitor.visit("amount", &self.amount);
-        }
-    }
-
-    #[test]
-    fn encode_transaction_type() {
-        let expected = "Transaction(Person from,Person to,Asset tx)Asset(address token,uint256 amount)Person(address wallet,string name)";
-
-        let value: Transaction = Default::default();
-        assert_eq!(encode_type(&value), expected);
     }
 }
