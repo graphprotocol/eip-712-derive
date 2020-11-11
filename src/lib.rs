@@ -46,7 +46,7 @@ pub struct Eip712Domain {
     pub name: String,
     pub version: String,
     pub chain_id: U256,
-    pub verifying_contract: Bytes20,
+    pub verifying_contract: Address,
     pub salt: Bytes32,
 }
 
