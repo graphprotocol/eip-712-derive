@@ -18,7 +18,7 @@ pub use atomic_types::*;
 pub use type_hash::{encode_type, type_hash};
 pub use types::{MemberType, MemberVisitor, StructType};
 
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, PartialEq, Eq, Debug, Default, Hash)]
 pub struct DomainSeparator(Bytes32);
 
 impl DomainSeparator {

@@ -104,7 +104,7 @@ impl TypeHashBuilder {
     }
 }
 
-#[derive(PartialEq, Eq)]
+#[derive(PartialEq, Eq, Hash, Debug, Clone)]
 struct Member {
     pub r#type: &'static str,
     pub name: &'static str,

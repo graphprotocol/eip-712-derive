@@ -12,9 +12,9 @@ macro_rules! impl_atomic {
     };
 }
 
-#[derive(Default, Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Default, Copy, Clone, PartialEq, Eq, Hash, Debug)]
 pub struct Address(pub Bytes20);
-#[derive(Default, Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Default, Copy, Clone, PartialEq, Eq, Hash, Debug)]
 pub struct U256(pub Bytes32);
 
 impl_atomic!(Address, "address", self { self.0.encode_data() });
