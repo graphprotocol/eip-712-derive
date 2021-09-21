@@ -9,8 +9,8 @@ mod types;
 extern crate lazy_static;
 
 use clear_on_drop::clear_stack_on_return;
+use libsecp256k1::{Message, RecoveryId, SecretKey, Signature};
 use prelude::*;
-use secp256k1::{Message, RecoveryId, SecretKey, Signature};
 use std::io::{Cursor, Write};
 
 // API
@@ -104,7 +104,7 @@ pub fn sign_hash<T: StructType>(domain_separator: &DomainSeparator, message: &T)
     keccak(&data[..])
 }
 
-/// Returns the serialized secp256k1 signature and the recoveryId on success.
+/// Returns the serialized libsecp256k1 signature and the recoveryId on success.
 pub fn sign_typed<T: StructType>(
     domain_separator: &DomainSeparator,
     value: &T,
@@ -115,9 +115,9 @@ pub fn sign_typed<T: StructType>(
     // Security: clear_stack_on_return zeroizes the temporary copy of SecretKey
     // created by SecretKey::parse
     let result =
-        clear_stack_on_return::<_, Result<(Signature, RecoveryId), secp256k1::Error>>(1, || {
+        clear_stack_on_return::<_, Result<(Signature, RecoveryId), libsecp256k1::Error>>(1, || {
             let secret_key = SecretKey::parse(key)?;
-            Ok(secp256k1::sign(&message, &secret_key))
+            Ok(libsecp256k1::sign(&message, &secret_key))
         });
 
     // Shenanigans to satisfy the compiler.
