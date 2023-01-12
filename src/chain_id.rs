@@ -23,3 +23,13 @@ pub const GOERLI: U256 = U256([
 pub const GETH_PRIVATE_DEFAULT: U256 = U256([
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 57,
 ]);
+
+// 421613 = 0x66EED is the chain ID for Arbitrum Goerli
+pub const ARBITRUM_GOERLI: U256 = U256([
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6, 110, 237,
+]);
+
+// 42161 = 0xA4B1 is the chain ID for Arbitrum One
+pub const ARBITRUM_ONE: U256 = U256([
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 164, 177,
+]);
