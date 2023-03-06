@@ -93,9 +93,9 @@ pub fn encode<T: StructType>(domain_separator: &DomainSeparator, message: &T) ->
     // encode(domainSeparator : 𝔹²⁵⁶, message : 𝕊) = "\x19\x01" ‖ domainSeparator ‖ hashStruct(message)
     let mut result = [0u8; 66];
     let mut cursor = Cursor::new(&mut result[..]);
-    cursor.write("\x19\x01".as_bytes()).unwrap();
-    cursor.write(domain_separator.as_bytes()).unwrap();
-    cursor.write(&hash_struct(message)).unwrap();
+    cursor.write_all("\x19\x01".as_bytes()).unwrap();
+    cursor.write_all(domain_separator.as_bytes()).unwrap();
+    cursor.write_all(&hash_struct(message)).unwrap();
     result
 }
 
