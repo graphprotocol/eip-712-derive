@@ -1,7 +1,6 @@
 //! eip-712-derive: The `derive` is aspirational
 
 mod atomic_types;
-pub mod chain_id;
 mod dynamic_types;
 mod prelude;
 mod type_hash;

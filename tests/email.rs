@@ -1,5 +1,4 @@
 use eip_712_derive::*;
-use hex;
 use std::convert::TryInto;
 
 // No salt
