@@ -1,8 +1,6 @@
 use crate::prelude::*;
-use lazy_static::lazy_static;
 use std::any::TypeId;
-use std::collections::{BTreeMap, HashMap};
-use std::sync::RwLock;
+use std::collections::BTreeMap;
 
 // (SPEC) The type of a struct is encoded as name ‖ "(" ‖ member₁ ‖ "," ‖
 // member₂ ‖ "," ‖ … ‖ memberₙ ")" where each member is written as type ‖ " " ‖
@@ -41,25 +39,11 @@ pub fn encode_type<T: StructType>(value: &T) -> String {
     buffer
 }
 
-lazy_static! {
-    static ref CACHE: RwLock<HashMap<TypeId, Bytes32>> = RwLock::new(HashMap::new());
-}
-
 /// Memoized type hash
 pub fn type_hash<T: StructType>(value: &T) -> Bytes32 {
-    let read = CACHE.read().unwrap();
-    if let Some(cached) = read.get(&TypeId::of::<T>()) {
-        return *cached;
-    }
-    drop(read);
-
     // (SPEC) keccak256(encodeType(typeOf(s)))
     let encoded = encode_type(value);
-    let result = keccak(encoded.as_bytes());
-
-    let mut write = CACHE.write().unwrap();
-    write.insert(TypeId::of::<T>(), result);
-    result
+    keccak(encoded.as_bytes())
 }
 
 pub struct TypeHashBuilder {
