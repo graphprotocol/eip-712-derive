@@ -84,7 +84,7 @@ impl TypeHashBuilder {
         }
         self.inner.get_mut(name)
     }
-    pub fn struct_type<'a, T: StructType>(&'a mut self) -> StructTypeBuilder<'a> {
+    pub fn struct_type<T: StructType>(&mut self) -> StructTypeBuilder {
         assert!(self.get_encoded_type_mut(T::TYPE_NAME).is_none());
         let value = EncodedType {
             type_id: TypeId::of::<T>(),
@@ -145,19 +145,16 @@ impl MemberVisitor for StructTypeBuilder<'_> {
         // It's possible that types show up more than once, so we need
         // to check if this is a type we've already added. Recursion
         // is also possible, so verify that as well.
-        match self.parent.get_encoded_type_mut(T::TYPE_NAME) {
-            Some(encoded_type) => {
-                // Ensure the uniqueness of type names. The spec doesn't seem to
-                // address this, but it makes sense because with duplicated type
-                // names the result of the sort by name step would be undefined.
-                assert!(
-                    encoded_type.type_id == TypeId::of::<T>(),
-                    "Types with duplicated name: {}",
-                    T::TYPE_NAME
-                );
-                return;
-            }
-            None => {}
+        if let Some(encoded_type) = self.parent.get_encoded_type_mut(T::TYPE_NAME) {
+            // Ensure the uniqueness of type names. The spec doesn't seem to
+            // address this, but it makes sense because with duplicated type
+            // names the result of the sort by name step would be undefined.
+            assert!(
+                encoded_type.type_id == TypeId::of::<T>(),
+                "Types with duplicated name: {}",
+                T::TYPE_NAME
+            );
+            return;
         }
         value.add_members(self.parent);
     }
