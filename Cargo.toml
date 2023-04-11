@@ -10,6 +10,7 @@ license = "MIT"
 [dependencies]
 keccak-hash = "0.10.0"
 libsecp256k1 = "0.7.0"
+lazy_static = "1.4.0"
 clear_on_drop = "0.2.4"
 
 [dev-dependencies]

@@ -5,6 +5,7 @@ mod dynamic_types;
 mod prelude;
 mod type_hash;
 mod types;
+extern crate lazy_static;
 
 use clear_on_drop::clear_stack_on_return;
 use libsecp256k1::{Message, RecoveryId, SecretKey, Signature};
