@@ -51,10 +51,13 @@ fn spec_case() {
     // as well as the accompanying example here:
     // https://github.com/ethereum/EIPs/blob/master/assets/eip-712/Example.js
 
+    let mut chain_id = U256([0_u8; 32]);
+    chain_id.0[31] = 1;
+
     let domain = DomainStruct {
         name: "Ether Mail".to_owned(),
         version: "1".to_owned(),
-        chain_id: chain_id::MAIN_NET,
+        chain_id,
         verifying_contract: Address(
             (&(hex::decode("CcCCccccCCCCcCCCCCCcCcCccCcCCCcCcccccccC").unwrap())[..])
                 .try_into()
